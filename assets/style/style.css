@@ -1,0 +1,36 @@
+body {
+  width:100vw;
+  height:100vh;
+  padding:0;
+  margin:0;
+}
+
+header {
+  background-color:gray;
+  width:100%;
+  height:90%;
+}
+
+main {
+  background-color:lightgray;
+  width:90%;
+  height:10%; 
+  overflow:hidden;
+  overflow-y:scroll;
+}
+
+aside {
+  background-color:darkgray;
+  width:10%;
+  height:90%;
+  float:right;
+}
+
+/* articles are generated once transformToPhase2() is called */
+article {
+  height:200px;
+  width:200px;
+  background-color:red;
+  margin:20px;
+  display:inline-block;
+}

@@ -16,26 +16,33 @@
   <!-- todo add favicon -->
 
   <!-- local custom style -->
-  <link href="./assets/style/style.css">
+  <link rel="stylesheet" href="./assets/style/style.css">
 
 
 </head>
 <body>
+
   <header>
     <h1>Dogs Gone Wild</h1>
-    <input type="text" placeholder="Enter Your City:" />
+    <input type="text" id="search-input" placeholder="Enter Your City:" />
+    <button id="search-button">Search</button>
   </header>
-  <main>
 
-  </main>
-  <aside>
 
-  </aside>
+  <!-- currently empty but expands when transformToPhase3() is activated -->
+  <!-- prints the id of which <article> from the <aside> was clicked -->
+  <aside></aside>
+
+
+  <!-- currently empty but expands when transformToPhase2() is activated -->
+  <!-- js crates <articles> as placeholders for future information -->
+  <main></main>
+
 
   <!-- local custom script  -->
-  <script src="./assets/script.js"></script>
+  <script src="./assets/script/script.js"></script>
 
-    <!-- dayjs script -->
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <!-- dayjs script -->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 </body>
 </html>
