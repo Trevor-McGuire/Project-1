@@ -65,3 +65,23 @@ function transformToPhase3(e) {
   // print which <article> was clicked on to <aside>
   aside.textContent = `You just clicked the <article id="${e.target.id}">`
 }
+
+
+///////////////////////////////////
+/* Fetch API Commands */
+///////////////////////////////////
+
+/**
+ * Calls api.tomorrow.io to get the current hourly forcast for a string location
+ * @param {} location 
+ */
+function getWeather(location){
+    const options = {method: 'GET', headers: {accept: 'application/json'}};
+
+    fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=KpAGFgRmxnfvYhtHvLxCZNTAlIPAffIV', options)
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.error(err));
+}
+
+getWeather("milwaukee");
