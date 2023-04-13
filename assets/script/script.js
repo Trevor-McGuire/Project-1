@@ -18,7 +18,6 @@ function locationPicked(e) {
     // todo validate input
     transformToPhase2()
   }
-  
 }
 
 function transformToPhase2() {
@@ -29,15 +28,17 @@ function transformToPhase2() {
   var header = document.querySelector("header")
   var aside = document.querySelector("aside")
   var main = document.querySelector("main")
+  var weather = document.querySelector(".weather")
 
   // clear anything from <aside> and <main>
   aside.textContent = '';
   main.textContent = '';
 
   // change heights and widths
-  header.setAttribute("style","height:10%;width:100%")
-  aside.setAttribute("style","height:90%;width:0%")
-  main.setAttribute("style","height:90%;width:100%")
+  header.setAttribute("style","height:20%;width:100%")
+  aside.setAttribute("style","height:80%;width:0%")
+  main.setAttribute("style","height:80%;width:100%")
+  weather.setAttribute("style","display:flex;")
 
   // create 20 rancom articles for testing purposes 
   for (i=0 ; i<20 ; i++) {
@@ -59,9 +60,9 @@ function transformToPhase3(e) {
   var main = document.querySelector("main")
 
   // change heights and widths
-  header.setAttribute("style","height:10%;width:100%")
-  aside.setAttribute("style","height:90%;width:50%")
-  main.setAttribute("style","height:90%;width:50%")
+  header.setAttribute("style","height:20%;width:100%")
+  aside.setAttribute("style","height:80%;width:50%")
+  main.setAttribute("style","height:80%;width:50%")
 
   // print which <article> was clicked on to <aside>
   aside.textContent = `You just clicked the <article id="${e.target.id}">`
