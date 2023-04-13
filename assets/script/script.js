@@ -30,13 +30,14 @@ function transformToPhase2() {
   var aside = document.querySelector("aside")
   var main = document.querySelector("main")
 
-  // clear anything from <aside>
+  // clear anything from <aside> and <main>
   aside.textContent = '';
+  main.textContent = '';
 
   // change heights and widths
   header.setAttribute("style","height:10%;width:100%")
-  aside.setAttribute("style","height:90%;width:10%")
-  main.setAttribute("style","height:90%;width:90%")
+  aside.setAttribute("style","height:90%;width:0%")
+  main.setAttribute("style","height:90%;width:100%")
 
   // create 20 rancom articles for testing purposes 
   for (i=0 ; i<20 ; i++) {
