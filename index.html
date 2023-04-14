@@ -1,53 +1,79 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <!-- common meta tags -->
-  <meta charset="utf-8" />
-  <!-- todo add description -->
-  <meta name="description" content="" />
-  <!-- todo add keywords -->
-  <meta name="keywords" content="" />
-  <!-- todo add authors -->
-  <meta name="author" content="" />
-  <!-- todo add copyright -->
-  <meta name="copyright" content="" />
+  <head>
+    <!-- common meta tags -->
+    <meta charset="utf-8" />
+    <!-- todo add description -->
+    <meta name="description" content="" />
+    <!-- todo add keywords -->
+    <meta name="keywords" content="" />
+    <!-- todo add authors -->
+    <meta name="author" content="" />
+    <!-- todo add copyright -->
+    <meta name="copyright" content="" />
 
-  <!-- favicon generator list -->
-  <!-- todo add favicon -->
+    <!-- favicon generator list -->
+    <!-- todo add favicon -->
 
-  <!-- local custom style -->
-  <link rel="stylesheet" href="./assets/style/style.css">
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- local custom style -->
+    <link rel="stylesheet" href="./assets/style/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 
+     <!-- google places api -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIDjXvF9NUyB43bLbgtB83A9zYc5Tl2qI&libraries=places"></script>
 
-</head>
-<body>
-
-  <header>
-    <div class="border border-4 border-black p-4 rounded-md search-bar">
-      <h1 class="pb-4 text-3xl flex justify-center">Dogs Gone Wild</h1>
-      <div>
-        <input class="rounded-md p-1" type="text" id="search-input" placeholder="Enter Your City:" />
-        <button class="rounded-md p-1 px-3 bg-amber-300 hover:bg-orange-400" id="search-button">Search</button>
+  </head>
+  <body>
+    <header>
+      <div class="border border-4 border-black p-4 rounded-md search-bar">
+        <h1 class="pb-4 text-3xl flex justify-center">Dogs Gone Wild</h1>
+        <div>
+          <input
+            class="rounded-md p-1"
+            type="text"
+            id="search-input"
+            placeholder="Enter Your City:"
+          />
+          <button
+            class="rounded-md p-1 px-3 bg-amber-300 hover:bg-orange-400"
+            id="search-button"
+          >
+            Search
+          </button>
+        </div>
       </div>
-  </div>
-  </header>
+      <div class="weather">
+        <div>
+          <span>Time</span>
+          <span>Temp</span>
+        </div>
+        <div>
+          <span>Time</span>
+          <span>Temp</span>
+        </div>
+        <div>
+          <span>Time</span>
+          <span>Temp</span>
+        </div>
+        <div>
+          <span>Time</span>
+          <span>Temp</span>
+        </div>
+      </div>
+    </header>
 
+    <!-- currently empty but expands when transformToPhase3() is activated -->
+    <!-- prints the id of which <article> from the <aside> was clicked -->
+    <aside><div id="map"></div></aside>
 
-  <!-- currently empty but expands when transformToPhase3() is activated -->
-  <!-- prints the id of which <article> from the <aside> was clicked -->
-  <aside></aside>
+    <!-- currently empty but expands when transformToPhase2() is activated -->
+    <!-- js crates <articles> as placeholders for future information -->
+    <main></main>
 
+    <!-- local custom script  -->
+    <script src="./assets/script/script.js"></script>
 
-  <!-- currently empty but expands when transformToPhase2() is activated -->
-  <!-- js crates <articles> as placeholders for future information -->
-  <main></main>
-
-
-  <!-- local custom script  -->
-  <script src="./assets/script/script.js"></script>
-
-  <!-- dayjs script -->
-  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-</body>
+    <!-- dayjs script -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  </body>
 </html>
