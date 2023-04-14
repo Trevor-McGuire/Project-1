@@ -76,18 +76,34 @@ function transformToPhase3(e) {
 /**
  * Calls api.tomorrow.io to get the current hourly forcast for a string location
  * @param {} location 
+ * @returns 
  */
-function getWeather(location){
+async function getWeather(location){
     const options = {method: 'GET', headers: {accept: 'application/json'}};
 
-    fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=KpAGFgRmxnfvYhtHvLxCZNTAlIPAffIV', options)
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.error(err));
+    const response = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=KpAGFgRmxnfvYhtHvLxCZNTAlIPAffIV', options);
+    
+    // check that response was not okay
+    if (!response.ok) {
+      throw new Error("problem with");
+    }
+    const jsonData = await response.json();
+    
+    // log response
+    console.log(response);
+    console.log(jsonData);
+    
+    // response should contain 
+
+    for (var i = 0; i < 5; i++){
+      var temp = jsonData.timelines.hourly[i].values.temperature;
+      console.log(temp);
+    }
+
+
 }
 
-getWeather("milwaukee");
-
+//getWeather("milwaukee");
 
 
 ///////////////////////////////////
@@ -110,3 +126,4 @@ window.addEventListener("load",function() {
   })
   console.log(autocomplete)
 })
+
