@@ -87,3 +87,26 @@ function getWeather(location){
 }
 
 getWeather("milwaukee");
+
+
+
+///////////////////////////////////
+/* Places API Commands */
+///////////////////////////////////
+
+window.addEventListener("load",function() {
+  var input = document.getElementById("search-input");
+  var options = {
+    types: ["(cities)"],
+    componentRestrictions: { country: ["us"] },
+  };
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
+  autocomplete.addListener("place_changed", function () {
+    var place = autocomplete.getPlace();
+    if (!place.geometry) {
+      console.log("No details available for input: '" + place.name + "'");
+      return;
+    }
+  })
+  console.log(autocomplete)
+})
