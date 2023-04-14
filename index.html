@@ -17,17 +17,20 @@
 
   <!-- local custom style -->
   <link rel="stylesheet" href="./assets/style/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
 
 
 </head>
 <body>
 
   <header>
-    <h1>Dogs Gone Wild</h1>
-    <div>
-      <input type="text" id="search-input" placeholder="Enter Your City:" />
-      <button id="search-button">Search</button>
-    </div>
+    <div class="border border-4 border-black p-4 rounded-md search-bar">
+      <h1 class="pb-4 text-3xl flex justify-center">Dogs Gone Wild</h1>
+      <div>
+        <input class="rounded-md p-1" type="text" id="search-input" placeholder="Enter Your City:" />
+        <button class="rounded-md p-1 px-3 bg-amber-300 hover:bg-orange-400" id="search-button">Search</button>
+      </div>
+  </div>
   </header>
 
 
