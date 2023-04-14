@@ -81,7 +81,9 @@ function transformToPhase3(e) {
 async function getWeather(location){
     const options = {method: 'GET', headers: {accept: 'application/json'}};
 
-    const response = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=KpAGFgRmxnfvYhtHvLxCZNTAlIPAffIV', options);
+    //var weatherApiKey = "KpAGFgRmxnfvYhtHvLxCZNTAlIPAffIV";
+    var weatherApiKey = "4aZo1qVaQKrX2oZsXAE0hb7HvyrE0cWv";
+    const response = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=' + weatherApiKey, options);
     
     // check that response was not okay
     if (!response.ok) {
@@ -93,18 +95,28 @@ async function getWeather(location){
     console.log(response);
     console.log(jsonData);
     
-    // response should contain 
-
+    var ret = [];
+    // for each hour we want the temperature, weatherCode 
     for (var i = 0; i < 5; i++){
       var temp = jsonData.timelines.hourly[i].values.temperature;
-      console.log(temp);
+      var code = jsonData.timelines.hourly[i].values.weatherCode;
+      ret.push([temp, code]);
     }
-
-
+    console.log(JSON.stringify(ret));
+    return ret;
 }
 
-//getWeather("milwaukee");
+function getTestWeather(location){
+  var ret = [];
+  ret.push([70.47, 1102]);
+  ret.push([67.28,1102]);
+  ret.push([64.26,1000]);
+  ret.push([62.61,1001]);
+  ret.push([60.89,1101]);
+  return ret;
+}
 
+console.log(JSON.stringify(getTestWeather("some spot")));
 
 ///////////////////////////////////
 /* Places API Commands */
