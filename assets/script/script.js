@@ -264,7 +264,9 @@ function getWeatherCodeImage(weatherCode, day){
 }
 
 ///////////////////////////////////
-/* Places API Commands */
+// Places API Commands */
+// following function creates an autofill for the "search-input"
+// the criteria is restricted to cities in the us
 ///////////////////////////////////
 
 window.addEventListener("load",function() {
@@ -280,7 +282,6 @@ window.addEventListener("load",function() {
       console.log("No details available for input: '" + place.name + "'");
       return;
     }
+    console.log(autocomplete)
   })
-  console.log(autocomplete)
 })
-
