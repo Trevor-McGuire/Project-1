@@ -14,7 +14,7 @@ var googleApiKey = "AIzaSyAIDjXvF9NUyB43bLbgtB83A9zYc5Tl2qI";
  * @param {string} photoRef 
  * @param {int} rating 
  */
-function location(name, place_id, photoRef, rating){
+function parkLocation(name, place_id, photoRef, rating){
   this.name = name; 
   //this.idOpen ??
   this.place_id = place_id;
@@ -182,18 +182,21 @@ async function getNearByLocations(latitude, longitude){
     //there should be some check for if photos exist
     var pictureRef = jsonData.results[i].photos[0].photo_reference;
     var rating = jsonData.results[i].rating;
-    var newLocation = location(name, place_id, pictureRef, rating);
+    var newLocation = parkLocation(name, place_id, pictureRef, rating);
     ret.push(newLocation);
   }
   console.log(JSON.stringify(ret));
   return ret;
 }
 
+//getImageReference("AUjq9jlTyidRtwiBxwaHLqPvlNHSh2d66EFqgqGcGXXVE2Uje7wLWdNL84dB1EE3EOx12wTXvc0m3DWvFiu0Lb7SLw6b1X9pzJXQf4aH45aT3rl2hM3THQzx2atTRU3ixIimBgPoY2vkIFuk2XPjloLjkGXjJPEdN6YFQA2qJb6puiizT9wL");
 async function getImageReference(photoRef){
-  //const options = {method: 'GET', headers: {accept: 'application/json'}};
-  //const response = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + "%2C" + longitude + '&radius=32000&type=park&keyword=dog&key=' + googleApiKey, options);
+  const options = {method: 'GET', headers: {accept: 'application/json'}};
+  // &key=
+  const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' + photoRef + '&key=' + googleApiKey, options);
   
   // check that response was not okay 
+  console.log(response);
   //if (!response.ok) {
   //  throw new Error("problem with");
   //}
@@ -207,7 +210,7 @@ async function getImageReference(photoRef){
   // for each hour we want the temperature, weatherCode 
  
   //return ret;
-  return "image url here"
+  return "image url here";
 }
 
 /**
@@ -365,7 +368,7 @@ function getWeatherCodeImage(weatherCode, day){
 
 window.addEventListener("load",placesAPI)
 function placesAPI() {
-  var input = document.getElementById("search-input");
+  //var input = document.getElementById("search-input");
   var options = {
     types: ["(cities)"],
     componentRestrictions: { country: ["us"] },
@@ -379,7 +382,7 @@ function placesAPI() {
     }
     var lat = place.geometry.location.lat()
     var lng = place.geometry.location.lng()
-    mapsAPI(lat,lng)
+    //mapsAPI(lat,lng)
     getNearbyLocation(lat,lng)
   })
   return autocomplete
@@ -421,4 +424,3 @@ function mapsAPI(latitude,longitude) {
       }
     });
 }
-getApi()
