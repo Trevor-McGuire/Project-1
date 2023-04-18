@@ -1,6 +1,7 @@
 var input = document.querySelector("#search-input")
 var button = document.querySelector("#search-button")
 var modalEL = document.getElementById("defaultModal")
+var closeBtnEl =document.getElementById("close");
 input.addEventListener("keypress",locationPicked)
 button.addEventListener("click",locationPicked)
 
@@ -54,30 +55,16 @@ function transformToPhase2() {
   }
 }
 
+closeBtnEl.addEventListener("click", hideModal);
+
+
 function showModal(){
 modalEL.classList.remove("hidden");
 }
 
-// // options with default values
-// var options = {
-//   placement: 'bottom-right',
-//   backdrop: 'dynamic',
-//   backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
-//   closable: true,
-//   onHide: () => {
-//       console.log('modal is hidden');
-//   },
-//   onShow: () => {
-//       console.log('modal is shown');
-//   },
-//   onToggle: () => {
-//       console.log('modal has been toggled');
-//   }
-// };
-
-// var modal = new Modal(modalEL, options);
-
-// modal.toggle();
+function hideModal(){
+  modalEL.classList.add("hidden"); 
+}
 
 
 
