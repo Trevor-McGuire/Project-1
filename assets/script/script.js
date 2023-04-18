@@ -25,6 +25,8 @@ function location(name, place_id, photoRef, rating){
 
 // two ways to call this function: hitting 'enter' or click 'search'
 function locationPicked(e) {
+  var location = placesAPI()
+  console.log(location)
   var keyCode = e.code || e.key
   if (keyCode == 'Enter'){
     // Enter pressed
@@ -356,12 +358,13 @@ function getWeatherCodeImage(weatherCode, day){
 }
 
 ///////////////////////////////////
-// Places API Commands */
+// Places API Autofill */
 // following function creates an autofill for the "search-input"
 // the criteria is restricted to cities in the us
 ///////////////////////////////////
 
-window.addEventListener("load",function() {
+window.addEventListener("load",placesAPI)
+function placesAPI() {
   var input = document.getElementById("search-input");
   var options = {
     types: ["(cities)"],
@@ -374,6 +377,48 @@ window.addEventListener("load",function() {
       console.log("No details available for input: '" + place.name + "'");
       return;
     }
-    console.log(autocomplete)
+    var lat = place.geometry.location.lat()
+    var lng = place.geometry.location.lng()
+    mapsAPI(lat,lng)
+    getNearbyLocation(lat,lng)
   })
-})
+  return autocomplete
+}
+
+///////////////////////////////////
+// Maps API 
+///////////////////////////////////
+
+function mapsAPI(latitude,longitude) {
+  var lat = latitude;
+  var lng = longitude;
+  // i did not change anyting below this line in a long time
+  var radius = 32186.9; // 20 miles in meters
+  var type = 'park';
+  var apiKey = 'AIzaSyAIDjXvF9NUyB43bLbgtB83A9zYc5Tl2qI';
+  var request = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=${radius}&type=${type}&key=${apiKey}`
+  fetch(request)
+    .then(function (response) {
+      if (response.status !== 200) {
+        console.log("respone error !== 200")
+      }
+      console.log(response)
+      return response.json();
+    })
+    .then(function (data) {
+      var city = document.querySelector(".city")
+      var date = document.querySelectorAll(".date")
+      var code = document.querySelectorAll(".code")
+      var temp = document.querySelectorAll(".temp")
+      var wind = document.querySelectorAll(".wind")
+      var humidity = document.querySelectorAll(".humidity")
+      city.textContent = name
+      for (i=0 ; i<date.length ; i++) {
+        date[i].textContent = dayjs().add(i,"day",i).format("ddd")
+        temp[i].textContent = parseInt(data.hourly.temperature_2m[24*i]) + data.hourly_units.temperature_2m
+        wind[i].textContent = parseInt(data.hourly.windspeed_10m[24*i]) + " " + data.hourly_units.windspeed_10m
+        humidity[i].textContent = parseInt(data.hourly.relativehumidity_2m[24*i]) + data.hourly_units.relativehumidity_2m
+      }
+    });
+}
+getApi()
