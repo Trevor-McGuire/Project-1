@@ -65,3 +65,7 @@ article {
   background-color: green;
   padding:5px;
 }
+
+.modal-height {
+  max-height: 55%;
+}

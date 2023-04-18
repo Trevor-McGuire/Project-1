@@ -1,5 +1,7 @@
 var input = document.querySelector("#search-input")
 var button = document.querySelector("#search-button")
+var modalEL = document.getElementById("defaultModal")
+var closeBtnEl =document.getElementById("close");
 input.addEventListener("keypress",locationPicked)
 button.addEventListener("click",locationPicked)
 
@@ -44,29 +46,45 @@ function transformToPhase2() {
   for (i=0 ; i<20 ; i++) {
     var article = document.createElement("article")
     article.setAttribute("id",i)
+    article.setAttribute("data-modal-target", "defaultModal");
+    article.setAttribute("data-modal-toggle", "defaultModal");
+    article.classList.add( "text-white", "bg-blue-700", "hover:bg-blue-800", "focus:ring-4", "focus:outline-none", "focus:ring-blue-300", "font-medium", "rounded-lg", "text-sm", "px-5", "py-2.5", "text-center", "dark:bg-blue-600", "dark:hover:bg-blue-700", "dark:focus:ring-blue-800")
     article.textContent = i
-    article.addEventListener("click",transformToPhase3)
-    main.append(article)
+    article.addEventListener("click", showModal);
+    main.append(article);
   }
 }
 
-function transformToPhase3(e) {
-  // log that function was called 
-  console.log("transformToPhase3() activated")
+closeBtnEl.addEventListener("click", hideModal);
 
-  // set elements to variables
-  var header = document.querySelector("header")
-  var aside = document.querySelector("aside")
-  var main = document.querySelector("main")
 
-  // change heights and widths
-  header.setAttribute("style","height:20%;width:100%")
-  aside.setAttribute("style","height:80%;width:50%")
-  main.setAttribute("style","height:80%;width:50%")
-
-  // print which <article> was clicked on to <aside>
-  aside.textContent = `You just clicked the <article id="${e.target.id}">`
+function showModal(){
+modalEL.classList.remove("hidden");
 }
+
+function hideModal(){
+  modalEL.classList.add("hidden"); 
+}
+
+
+
+// function transformToPhase3(e) {
+//   // log that function was called 
+//   console.log("transformToPhase3() activated")
+
+//   // set elements to variables
+//   var header = document.querySelector("header")
+//   var aside = document.querySelector("aside")
+//   var main = document.querySelector("main")
+
+//   // change heights and widths
+//   header.setAttribute("style","height:20%;width:100%")
+//   aside.setAttribute("style","height:80%;width:50%")
+//   main.setAttribute("style","height:80%;width:50%")
+
+//   // print which <article> was clicked on to <aside>
+//   aside.textContent = `You just clicked the <article id="${e.target.id}">`
+// }
 
 
 ///////////////////////////////////
