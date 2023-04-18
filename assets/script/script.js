@@ -303,6 +303,10 @@ function placesAPI() {
       console.log("No details available for input: '" + place.name + "'");
       return;
     }
+    var lat = place.geometry.location.lat()
+    var lng = place.geometry.location.lng()
+    mapsAPI(lat,lng)
+    getNearbyLocation(lat,lng)
   })
   return autocomplete
 }
@@ -311,9 +315,10 @@ function placesAPI() {
 // Maps API 
 ///////////////////////////////////
 
-function getApi() {
-  var lat = 37.7749;
-  var lng = -122.4194;
+function mapsAPI(latitude,longitude) {
+  var lat = latitude;
+  var lng = longitude;
+  // i did not change anyting below this line in a long time
   var radius = 32186.9; // 20 miles in meters
   var type = 'park';
   var apiKey = 'AIzaSyAIDjXvF9NUyB43bLbgtB83A9zYc5Tl2qI';
