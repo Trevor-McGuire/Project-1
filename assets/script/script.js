@@ -137,6 +137,41 @@ function getTestWeather(location){
 }
 
 /**
+ * Takes in a latitude and logitude value and then outputs a json response
+ * @param {int} latitude 
+ * @param {int} longitude 
+ * @returns 
+ */
+async function getNearByLocations(latitude, longitude){
+  const options = {method: 'GET', headers: {accept: 'application/json'}};
+
+  //var weatherApiKey = "KpAGFgRmxnfvYhtHvLxCZNTAlIPAffIV";
+  var weatherApiKey = "4aZo1qVaQKrX2oZsXAE0hb7HvyrE0cWv";
+  const response = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=' + weatherApiKey, options);
+  
+  // check that response was not okay 
+  if (!response.ok) {
+    throw new Error("problem with");
+  }
+  const jsonData = await response.json();
+  
+  // log response
+  console.log(response);
+  console.log(jsonData);
+  
+  var ret = [];
+  // for each hour we want the temperature, weatherCode 
+  for (var i = 0; i < 5; i++){
+    var name = jsonData.results[i].names;
+    var place_id = jsonData.results[i].place_id;
+    var rating = 
+    ret.push([temp, code]);
+  }
+  console.log(JSON.stringify(ret));
+  return ret;
+}
+
+/**
  * Takes in a weatherCode and returns an image in its likeness
  * @param {int} weatherCode 
  * @param {boolean} day 
