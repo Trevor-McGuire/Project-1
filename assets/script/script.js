@@ -85,7 +85,7 @@ async function getWeather(location){
     var weatherApiKey = "4aZo1qVaQKrX2oZsXAE0hb7HvyrE0cWv";
     const response = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=' + weatherApiKey, options);
     
-    // check that response was not okay
+    // check that response was not okay 
     if (!response.ok) {
       throw new Error("problem with");
     }
@@ -117,7 +117,7 @@ function getTestWeather(location){
 }
 
 /**
- * 
+ * Takes in a weatherCode and returns an image in its likeness
  * @param {int} weatherCode 
  * @param {boolean} day 
  * @returns link to image
