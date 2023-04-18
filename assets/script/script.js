@@ -1,6 +1,7 @@
 var input = document.querySelector("#search-input")
 var button = document.querySelector("#search-button")
 var modalEL = document.getElementById("defaultModal")
+var closeBtnEl =document.getElementById("close");
 input.addEventListener("keypress",locationPicked)
 button.addEventListener("click",locationPicked)
 
@@ -56,30 +57,16 @@ function transformToPhase2() {
   }
 }
 
+closeBtnEl.addEventListener("click", hideModal);
+
+
 function showModal(){
 modalEL.classList.remove("hidden");
 }
 
-// // options with default values
-// var options = {
-//   placement: 'bottom-right',
-//   backdrop: 'dynamic',
-//   backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
-//   closable: true,
-//   onHide: () => {
-//       console.log('modal is hidden');
-//   },
-//   onShow: () => {
-//       console.log('modal is shown');
-//   },
-//   onToggle: () => {
-//       console.log('modal has been toggled');
-//   }
-// };
-
-// var modal = new Modal(modalEL, options);
-
-// modal.toggle();
+function hideModal(){
+  modalEL.classList.add("hidden"); 
+}
 
 
 
@@ -118,7 +105,7 @@ async function getWeather(location){
     var weatherApiKey = "4aZo1qVaQKrX2oZsXAE0hb7HvyrE0cWv";
     const response = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=' + weatherApiKey, options);
     
-    // check that response was not okay
+    // check that response was not okay 
     if (!response.ok) {
       throw new Error("problem with");
     }
@@ -150,7 +137,7 @@ function getTestWeather(location){
 }
 
 /**
- * 
+ * Takes in a weatherCode and returns an image in its likeness
  * @param {int} weatherCode 
  * @param {boolean} day 
  * @returns link to image
