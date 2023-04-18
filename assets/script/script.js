@@ -5,6 +5,24 @@ var closeBtnEl =document.getElementById("close");
 input.addEventListener("keypress",locationPicked)
 button.addEventListener("click",locationPicked)
 
+var googleApiKey = "AIzaSyAIDjXvF9NUyB43bLbgtB83A9zYc5Tl2qI";
+
+/**
+ * Creates a location object for use later
+ * @param {string} name 
+ * @param {string} place_id 
+ * @param {string} photoRef 
+ * @param {int} rating 
+ */
+function location(name, place_id, photoRef, rating){
+  this.name = name; 
+  //this.idOpen ??
+  this.place_id = place_id;
+  this.photoRef = photoRef;
+  this.imagesrc = getImageReference(photoRef);
+  this.rating = rating;
+}
+
 // two ways to call this function: hitting 'enter' or click 'search'
 function locationPicked(e) {
   var keyCode = e.code || e.key
@@ -126,7 +144,7 @@ async function getWeather(location){
 
 function getTestWeather(location){
   var ret = [];
-  ret.push([70.47, 1102]);
+  ret.push([70.47,1102]);
   ret.push([67.28,1102]);
   ret.push([64.26,1000]);
   ret.push([62.61,1001]);
@@ -142,10 +160,7 @@ function getTestWeather(location){
  */
 async function getNearByLocations(latitude, longitude){
   const options = {method: 'GET', headers: {accept: 'application/json'}};
-
-  //var weatherApiKey = "KpAGFgRmxnfvYhtHvLxCZNTAlIPAffIV";
-  var weatherApiKey = "4aZo1qVaQKrX2oZsXAE0hb7HvyrE0cWv";
-  const response = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=' + weatherApiKey, options);
+  const response = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + "%2C" + longitude + '&radius=32000&type=park&keyword=dog&key=' + googleApiKey, options);
   
   // check that response was not okay 
   if (!response.ok) {
@@ -159,14 +174,38 @@ async function getNearByLocations(latitude, longitude){
   
   var ret = [];
   // for each hour we want the temperature, weatherCode 
-  for (var i = 0; i < 5; i++){
+  for (var i = 0; i < jsonData.results.length; i++){
     var name = jsonData.results[i].names;
     var place_id = jsonData.results[i].place_id;
-    var rating = 
-    ret.push([temp, code]);
+    //there should be some check for if photos exist
+    var pictureRef = jsonData.results[i].photos[0].photo_reference;
+    var rating = jsonData.results[i].rating;
+    var newLocation = location(name, place_id, pictureRef, rating);
+    ret.push(newLocation);
   }
   console.log(JSON.stringify(ret));
   return ret;
+}
+
+async function getImageReference(photoRef){
+  //const options = {method: 'GET', headers: {accept: 'application/json'}};
+  //const response = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + "%2C" + longitude + '&radius=32000&type=park&keyword=dog&key=' + googleApiKey, options);
+  
+  // check that response was not okay 
+  //if (!response.ok) {
+  //  throw new Error("problem with");
+  //}
+  //const jsonData = await response.json();
+  
+  // log response
+  //console.log(response);
+  //console.log(jsonData);
+  
+  //var ret = [];
+  // for each hour we want the temperature, weatherCode 
+ 
+  //return ret;
+  return "image url here"
 }
 
 /**
