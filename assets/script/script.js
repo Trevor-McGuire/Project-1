@@ -161,12 +161,13 @@ function getTestWeather(location){
  * @returns 
  */
 async function getNearByLocations(latitude, longitude){
-  const options = {method: 'GET', headers: {accept: 'application/json'}};
+  console.log("in side getNearByLocations");
+  const options = {method: 'GET', headers: {accept: 'application/json', "Access-Control-Allow-Origin":'*'}};
   const response = await fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + latitude + "%2C" + longitude + '&radius=32000&type=park&keyword=dog&key=' + googleApiKey, options);
   
   // check that response was not okay 
   if (!response.ok) {
-    throw new Error("problem with");
+    throw new Error(response);
   }
   const jsonData = await response.json();
   
@@ -383,7 +384,7 @@ function placesAPI() {
     var lat = place.geometry.location.lat()
     var lng = place.geometry.location.lng()
     //mapsAPI(lat,lng)
-    getNearbyLocation(lat,lng)
+    getNearByLocations(lat,lng)
   })
   return autocomplete
 }
@@ -423,4 +424,59 @@ function mapsAPI(latitude,longitude) {
         humidity[i].textContent = parseInt(data.hourly.relativehumidity_2m[24*i]) + data.hourly_units.relativehumidity_2m
       }
     });
+}
+
+////////////////
+/* Test stuff */
+////////////////
+//getNearByLocations(43.0721661, 43.0721661);
+getNearByLocations2(43.0721661, -89.4007501);
+
+////////////////////////////
+/* Test weather api stuff */
+////////////////////////////
+var map;
+var service;
+var infowindow;
+
+function getNearByLocations2(latitude, longitude) {
+  console.log("inside get nearby locations 2");
+
+  var pyrmont = new google.maps.LatLng(latitude, longitude);
+
+  map = new google.maps.Map(document.getElementById('map'), {
+      center: pyrmont,
+      zoom: 15
+    });
+
+  var request = {
+    location: pyrmont,
+    radius: '3200',
+    type: ['park'],
+    keyword: 'dog'
+  };
+
+  service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, callback);
+}
+
+function callback(results, status) {
+  console.log(JSON.stringify(results))
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    var jsonResults = results;
+    var ret = [];
+    // for each hour we want the temperature, weatherCode 
+    for (var i = 0; i < jsonResults.length; i++){
+      var name = jsonResults[i].names;
+      var place_id = jsonResults[i].place_id;
+      //there should be some check for if photos exist
+      //if(jsonResults[i].photos[0] != null)
+      //var pictureRef = jsonResults[i].photos[0].photo_reference;
+      var rating = jsonResults[i].rating;
+      var newLocation = parkLocation(name, place_id, pictureRef, rating);
+      ret.push(newLocation);
+    }
+    console.log(JSON.stringify(ret));
+    return ret;
+  }
 }
