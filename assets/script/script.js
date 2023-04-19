@@ -1,6 +1,7 @@
 var input = document.querySelector("#search-input")
 var button = document.querySelector("#search-button")
 var modalEL = document.getElementById("defaultModal")
+var modalTitle = document.getElementById("modalTitle")
 var closeBtnEl =document.getElementById("close");
 var lat;
 var lng;
@@ -403,6 +404,7 @@ function placesAPI() {
     //mapsAPI(lat,lng)
     getNearByLocations2(lat,lng)
     renderWeather(lat, lng)
+    window.initMap = getNearByLocations2(lat,lng)
   })
   return autocomplete
 } 
@@ -450,6 +452,7 @@ function mapsAPI(latitude,longitude) {
 //getNearByLocations(43.0721661, 43.0721661);
 // getNearByLocations2(43.0721661, -89.4007501);
 
+
 ////////////////////////////
 /* Test weather api stuff */
 ////////////////////////////
@@ -485,16 +488,24 @@ function callback(results, status) {
     var ret = [];
     // for each hour we want the temperature, weatherCode 
     for (var i = 0; i < jsonResults.length; i++){
-      var name = jsonResults[i].names;
-      var place_id = jsonResults[i].place_id;
-      //there should be some check for if photos exist
-      //if(jsonResults[i].photos[0] != null)
-      //var pictureRef = jsonResults[i].photos[0].photo_reference;
-      var rating = jsonResults[i].rating;
-      var newLocation = parkLocation(name, place_id, pictureRef, rating);
-      ret.push(newLocation);
+      createMarker(results[i]);
     }
+    map.setCenter(results[0].geometry.location);
     console.log(JSON.stringify(ret));
     return ret;
   }
+}
+function createMarker(place){
+  if (!place.geometry || !place.geometry.location) return;
+
+  const marker = new google.maps.Marker({
+    map,
+    position: place.geometry.location,
+  });
+
+  google.maps.event.addListener(marker, "click", () => {
+    modalTitle.textContent = place.name;
+    showModal();
+  });
+
 }
