@@ -538,10 +538,10 @@ function getPlaceDetails(place_id, location){
       modalPicture.setAttribute("src", photos[0].getUrl())
       // set title into modal
       modalTitle.textContent = place.name;
-      // modal address?
-      // modal phone number
-      // modal rating
-      // modal website
+      // modal address? place.formatted_address
+      // modal phone number? place.formatted_phone_number
+      // modal rating? place.rating
+      // modal website? place.website
       console.log(JSON.stringify(place));
     }
   })
