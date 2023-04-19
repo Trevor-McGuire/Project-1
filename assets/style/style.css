@@ -60,11 +60,11 @@ article {
 .weather {
   display:none;
 }
-.weather>div {
+/* .weather>div {
   margin:5px;
   background-color: green;
   padding:5px;
-}
+} */
 
 .modal-height {
   max-height: 55%;
