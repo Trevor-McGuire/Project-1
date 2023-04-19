@@ -61,6 +61,7 @@
         </div>
       </div>
     </header>
+    <div id="map"></div>
 
 <!--modal alert pop-up from phase-2 -->
 <div id="defaultModal" tabindex="1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -70,7 +71,7 @@
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <!-- Modal header -->
           <div class="flex items-center justify-center p-4 border-b rounded-t dark:border-gray-600">
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white" id="modelTitle">
                   Terms of Service
               </h3>
               <button type="button" id="close" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="defaultModal">
@@ -99,7 +100,8 @@
 
     <!-- currently empty but expands when transformToPhase3() is activated -->
     <!-- prints the id of which <article> from the <aside> was clicked -->
-    <aside><div id="map"></div></aside>
+    <aside></aside>
+   
 
     <!-- currently empty but expands when transformToPhase2() is activated -->
     <!-- js crates <articles> as placeholders for future information -->

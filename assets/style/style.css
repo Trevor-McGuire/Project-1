@@ -69,3 +69,7 @@ article {
 .modal-height {
   max-height: 55%;
 }
+
+#map {
+  height: 50%;
+}
