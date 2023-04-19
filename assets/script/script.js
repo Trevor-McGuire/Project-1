@@ -447,9 +447,20 @@ function getNearByLocations2(latitude, longitude) {
 
   map = new google.maps.Map(document.getElementById('map'), {
       center: pyrmont,
-      zoom: 15
+      zoom: 13
     });
 
+  map.setOptions({ styles: [
+    {
+      featureType: "poi",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "transit",
+      elementType: "labels.icon",
+      stylers: [{ visibility: "off" }],
+    },
+  ]});
   var request = {
     location: pyrmont,
     radius: '3200',
@@ -475,11 +486,13 @@ function callback(results, status) {
     return ret;
   }
 }
+
 function createMarker(place){
   if (!place.geometry || !place.geometry.location) return;
 
   const marker = new google.maps.Marker({
     map,
+    label: place.rating + "",
     position: place.geometry.location,
   });
 
@@ -489,3 +502,4 @@ function createMarker(place){
   });
 
 }
+
