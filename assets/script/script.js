@@ -2,6 +2,7 @@ var input = document.querySelector("#search-input")
 var button = document.querySelector("#search-button")
 var modalEL = document.getElementById("defaultModal")
 var modalTitle = document.getElementById("modalTitle")
+var modalPicture = document.getElementById("modalPicture")
 var closeBtnEl =document.getElementById("close");
 var lat;
 var lng;
@@ -137,29 +138,53 @@ async function getWeather(location){
     console.log(jsonData);
     
     var ret = [];
-    // NEED TO FIGURE OUT HOW TO GET TIME FOR EACH HOUR!!
-    var timeOfDay = dayjs().format("h a");
-    console.log(timeOfDay)
     // for each hour we want the temperature, weatherCode 
     for (var i = 0; i < 5; i++){
-      var weatherTimeEL= document.querySelectorAll(".weatherTime");
-      var weatherIconEl = document.querySelectorAll(".weatherIcon");
-      var weatherTempEl = document.querySelectorAll(".weatherTemp");
       var temp = jsonData.timelines.hourly[i].values.temperature;
       var code = jsonData.timelines.hourly[i].values.weatherCode;
-      // ret.push([temp, code]);
-      weatherTempEl[i].textContent = temp;
-      var iconURL = getWeatherCodeImage(code, false);
-      weatherIconEl[i].setAttribute("src", iconURL);
-      weatherTimeEL[i].textContent = timeOfDay;     
+      ret.push([temp, code]);
     }
     console.log(JSON.stringify(ret));
     return ret;
 }
 
+/**
+ * Calls the getWeather call for input lat and lng and then renders the 
+ * objects into the weather dashboard
+ * @param {int} lat 
+ * @param {int} lng 
+ */
 function renderWeather(lat,lng){
   latLng = lat + ", " + lng
-  getWeather(latLng)
+  // get list of current weather forcast
+  //var currentWeather = getWeather(latLng);
+  var currentWeather = getTestWeather(latLng);
+  // NEED TO FIGURE OUT HOW TO GET TIME FOR EACH HOUR!!
+  var hour = 0;
+  var iconURL;
+  // get arrays of all weather items
+  var weatherTimeEL= document.querySelectorAll(".weatherTime");
+  var weatherIconEl = document.querySelectorAll(".weatherIcon");
+  var weatherTempEl = document.querySelectorAll(".weatherTemp");
+  for (var i = 0; i < 5; i++){
+    //add i hours to get the time of forcast
+    forcastTime = dayjs().add(i, 'hour');
+    hour = parseInt(forcastTime.format('H'));
+    // set current weather
+    weatherTempEl[i].textContent = currentWeather[i][0] + '° F';
+    // get weather code
+    console.log("current hour is " + hour);
+    // check if day
+    if (hour + i > 8 && hour + i < 18)
+    iconURL = getWeatherCodeImage(currentWeather[i][1], true);
+    else {
+      iconURL = getWeatherCodeImage(currentWeather[i][1], false);
+    }
+    // set icon of weather
+    weatherIconEl[i].setAttribute("src", iconURL);
+    // set hour of forcast
+    weatherTimeEL[i].textContent = forcastTime.format("h a");
+  }
 }
 
 function getTestWeather(location){
@@ -457,6 +482,7 @@ function mapsAPI(latitude,longitude) {
 /* Test weather api stuff */
 ////////////////////////////
 var map;
+var modalMap;
 var service;
 var infowindow;
 
@@ -518,8 +544,34 @@ function createMarker(place){
 
   google.maps.event.addListener(marker, "click", () => {
     modalTitle.textContent = place.name;
+    getPlaceDetails(place.place_id, place.geometry.location);
     showModal();
   });
 
 }
 
+function getPlaceDetails(place_id, location){
+  modalMap = new google.maps.Map(document.getElementById("modalMap"), {
+    center: location,
+    zoom: 15,
+  });
+  const request = {
+    placeId: place_id,
+    //fields: ["name","id","",""],
+  }
+  const service = new google.maps.places.PlacesService(modalMap);
+  service.getDetails(request, (place, status) => {
+    if (
+      status === google.maps.places.PlacesServiceStatus.OK &&
+      place &&
+      place.geometry &&
+      place.geometry.location
+    ) {
+      const marker = new google.maps.Marker({
+        modalMap,
+        position: place.geometry.location,
+      });
+      console.log(JSON.stringify(place));
+    }
+  })
+}
