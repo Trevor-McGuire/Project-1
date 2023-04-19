@@ -2,6 +2,8 @@ var input = document.querySelector("#search-input")
 var button = document.querySelector("#search-button")
 var modalEL = document.getElementById("defaultModal")
 var closeBtnEl =document.getElementById("close");
+var lat;
+var lng;
 input.addEventListener("keypress",locationPicked)
 button.addEventListener("click",locationPicked)
 
@@ -57,7 +59,7 @@ function transformToPhase2() {
   main.textContent = '';
 
   // change heights and widths
-  header.setAttribute("style","height:20%;width:100%")
+  header.setAttribute("style","height:38%;width:100%")
   aside.setAttribute("style","height:80%;width:0%")
   main.setAttribute("style","height:80%;width:100%")
   weather.setAttribute("style","display:flex;")
@@ -134,14 +136,29 @@ async function getWeather(location){
     console.log(jsonData);
     
     var ret = [];
+    // NEED TO FIGURE OUT HOW TO GET TIME FOR EACH HOUR!!
+    var timeOfDay = dayjs().format("h a");
+    console.log(timeOfDay)
     // for each hour we want the temperature, weatherCode 
     for (var i = 0; i < 5; i++){
+      var weatherTimeEL= document.querySelectorAll(".weatherTime");
+      var weatherIconEl = document.querySelectorAll(".weatherIcon");
+      var weatherTempEl = document.querySelectorAll(".weatherTemp");
       var temp = jsonData.timelines.hourly[i].values.temperature;
       var code = jsonData.timelines.hourly[i].values.weatherCode;
-      ret.push([temp, code]);
+      // ret.push([temp, code]);
+      weatherTempEl[i].textContent = temp;
+      var iconURL = getWeatherCodeImage(code, false);
+      weatherIconEl[i].setAttribute("src", iconURL);
+      weatherTimeEL[i].textContent = timeOfDay;     
     }
     console.log(JSON.stringify(ret));
     return ret;
+}
+
+function renderWeather(lat,lng){
+  latLng = lat + ", " + lng
+  getWeather(latLng)
 }
 
 function getTestWeather(location){
@@ -381,13 +398,14 @@ function placesAPI() {
       console.log("No details available for input: '" + place.name + "'");
       return;
     }
-    var lat = place.geometry.location.lat()
-    var lng = place.geometry.location.lng()
+     lat = place.geometry.location.lat()
+     lng = place.geometry.location.lng()
     //mapsAPI(lat,lng)
-    getNearByLocations(lat,lng)
+    getNearByLocations2(lat,lng)
+    renderWeather(lat, lng)
   })
   return autocomplete
-}
+} 
 
 ///////////////////////////////////
 // Maps API 
@@ -430,7 +448,7 @@ function mapsAPI(latitude,longitude) {
 /* Test stuff */
 ////////////////
 //getNearByLocations(43.0721661, 43.0721661);
-getNearByLocations2(43.0721661, -89.4007501);
+// getNearByLocations2(43.0721661, -89.4007501);
 
 ////////////////////////////
 /* Test weather api stuff */
