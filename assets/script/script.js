@@ -534,7 +534,7 @@ function getPlaceDetails(place_id, location){
         position: place.geometry.location,
       });
       // get the first picture and add to modal
-      var photos = place.photos;
+      var photos = place.photos; // can we limit this?
       modalPicture.setAttribute("src", photos[0].getUrl())
       // set title into modal
       modalTitle.textContent = place.name;
