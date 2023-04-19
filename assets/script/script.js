@@ -438,6 +438,7 @@ function mapsAPI(latitude,longitude) {
 /* Test stuff */
 ////////////////
 // getNearByLocations2(43.0721661, -89.4007501);
+getPlaceDetails("ChIJ6ZCmmwkZBYgRwddsM097k6g", '{"lat": 43.0490129,"lng": -87.9015714}');
 
 
 ////////////////////////////
