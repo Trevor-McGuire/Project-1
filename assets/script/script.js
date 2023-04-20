@@ -589,20 +589,22 @@ getLocalStorage()
 
 //this function will render the fav bar to access our fav list
 function renderFavBar() {
-  div = document.querySelector("#favoritebar")
+  var favoriteBar = document.querySelector("#favoritebar");
   for(i=0 ; i<favoritePlacesLocal.length ; i++) {
-    button = document.createElement("button")
-    button.textContent = favoritePlacesLocal[i][0]
+    var button = document.createElement("button");
+    button.textContent = favoritePlacesLocal[i][0];
+    console.log(favoritePlacesLocal[i][1]);
     //todo pick a final color
-    button.setAttribute("class","text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2")
-   button.addEventListener("click",function() {
-      console.log(favoritePlacesLocal[i])
-      getPlaceDetails(favoritePlacesLocal[i][1], '{"lat": 43.0490129,"lng": -87.9015714}');
-    }) 
-    div.append(button)
+    button.setAttribute("class","text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2");
+    var temp = favoritePlacesLocal[i][1];
+    console.log(temp);
+    button.addEventListener("click", function() {
+      getPlaceDetails(temp);
+    })
+    console.log(button);
+    favoriteBar.appendChild(button);
   }
-  //event for onlick call renderFavModel()
-    //getPlaceDetails("ChIJS2SkF39TBogRTsRYE0xQUXM", '{"lat": 43.0490129,"lng": -87.9015714}');
+
 }
 
 function setLocalStorage() {
