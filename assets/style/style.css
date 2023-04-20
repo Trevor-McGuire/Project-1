@@ -60,16 +60,15 @@ article {
 .weather {
   display:none;
 }
-/* .weather>div {
-  margin:5px;
-  background-color: green;
-  padding:5px;
-} */
+
+.weatherIcon {
+  max-height: 405px;
+}
 
 .modal-height {
   max-height: 55%;
 }
 
 #map {
-  height: 50%;
+  height: 62%;
 }
