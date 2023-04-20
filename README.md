@@ -8,7 +8,7 @@ Enter any city in the US and be greated by a map of dog parks in and near your c
 
 ## Deployed Link
 
-Dogs Gone Wild(https://trevor-mcguire.github.io/Project-1/)
+[Dogs Gone Wild](https://trevor-mcguire.github.io/Project-1/)
 
 ## Getting Started
 
