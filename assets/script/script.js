@@ -3,11 +3,13 @@ var button = document.querySelector("#search-button")
 var modalEL = document.getElementById("defaultModal")
 var modalTitle = document.getElementById("modalTitle")
 var modalPicture = document.getElementById("modalPicture")
-var modalButton = document.getElementById("modalButton")
+var modalFavButton = document.getElementById("modalFavButton")
+var modalUnFavButton = document.getElementById("modalUnFavButton")
 var closeBtnEl =document.getElementById("close");
 var placeNumberEl = document.getElementById("placeNumber")
 var placeWebsiteEl = document.getElementById("placeWebsite")
 var websiteDivEl = document.getElementById("websiteDiv")
+var favoriteBar = document.querySelector("#favoritebar");
 var lat;
 var lng;
 input.addEventListener("keypress",locationPicked)
@@ -564,8 +566,11 @@ function getPlaceDetails(place_id, location){
         placeNumberEl.textContent = place.formatted_phone_number ;
       }
       //update modal button
-      modalButton.addEventListener("click", function() {
+      modalFavButton.addEventListener("click", function() {
         setLocalStorage(place.name, place.place_id);
+      })
+      modalUnFavButton.addEventListener("click", function() {
+        removeFromLocalStorage(place.place_id);
       })
       console.log(JSON.stringify(place));
     }
@@ -580,32 +585,38 @@ function favorate(){
 ////////////////
 /* local storage */
 ////////////////
-localStorage.setItem('dogsGoneWild',[]);
 
 var favoritePlacesLocal = []
+//perge from memory
+//localStorage.setItem('dogsGoneWild',"");
 
 function getLocalStorage() {
-  favoritePlacesLocal = localStorage.getItem('dogsGoneWild');
+  var temp = localStorage.getItem("dogsGoneWild");
+  console.log("getLocalStorage starting")
+  console.log("localStorage.getItem = "+temp);
   
-  if (favoritePlacesLocal == null) {
-    favoritePlacesLocal = []
-    favoritePlacesLocal.push(["name","ChIJS2SkF39TBogRTsRYE0xQUXM"])
+  if (temp !== null) {
+    try {
+      favoritePlacesLocal = JSON.parse(temp);
+    } catch (e) {
+      favoritePlacesLocal = [];
+    }
   }
-  console.log(favoritePlacesLocal)
+  else{
+    favoritePlacesLocal = [];
+  }
+  console.log(favoritePlacesLocal);
   renderFavBar()
 }
 getLocalStorage()
 
 //this function will render the fav bar to access our fav list
 function renderFavBar() {
-  var favoriteBar = document.querySelector("#favoritebar");
+  console.log("in render fav bar");
+  console.log("removing objects");
   
-  // clear all children before adding more
-  while (favoriteBar.firstChild) {
-    favoriteBar.removeChild(favoriteBar.firstChild);
-  }
-
   //repopulate with new details
+  console.log("loop times " + favoritePlacesLocal.length);
   for(i=0; i < favoritePlacesLocal.length; i++) {
     var button = document.createElement("button");
     button.textContent = favoritePlacesLocal[i][0];
@@ -614,16 +625,69 @@ function renderFavBar() {
     button.setAttribute("class","text-white mt-1 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2");
     var temp = favoritePlacesLocal[i][1];
     console.log(temp);
-    button.addEventListener("click", function() {
-      getPlaceDetails(temp);
-    })
+    forceListener(button, favoritePlacesLocal[i][1])
     console.log(button);
     favoriteBar.appendChild(button);
   }
 }
+function makeFavButton(){
+  var button = document.createElement("button");
+  button.textContent = favoritePlacesLocal[i][0];
+  console.log(favoritePlacesLocal[i][1]);
+  button.setAttribute("class","text-white mt-1 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2");
+  var temp = favoritePlacesLocal[i][1];
+  console.log(temp);
+  forceListener(button, favoritePlacesLocal[i][1])
+  console.log(button);
+  favoriteBar.appendChild(button);
+}
+
+function forceListener(button, place_id){
+  button.addEventListener("click", function() {
+    getPlaceDetails(place_id);
+  })
+}
+function clearFavBar(){
+  while (favoriteBar.firstChild) {
+    favoriteBar.removeChild(favoriteBar.firstChild);
+  }
+}
 
 function setLocalStorage(name, place_id) {
-  favoritePlacesLocal.push([name,place_id]);
-  localStorage.setItem('dogsGoneWild',favoritePlacesLocal);
+  console.log("in set local storage. saving " + name);
+  var bool = true;
+  for (var i = 0; i < favoritePlacesLocal.length; i++){
+    if (favoritePlacesLocal[i][1] == place_id){
+      bool = false;
+    }
+  }
+  if (bool){
+    favoritePlacesLocal.push([name,place_id]);
+    localStorage.setItem('dogsGoneWild', JSON.stringify(favoritePlacesLocal));
+    clearFavBar();
+    renderFavBar();
+  }
+}
+
+function removeFromLocalStorage(place_id){
+  console.log("place id = " + place_id);
+  // return value
+  var temp = [];
+
+  for (var i = 0; i < favoritePlacesLocal.length; i++){
+    if (favoritePlacesLocal[i][1] == place_id){
+      favoritePlacesLocal.removeChild(favoritePlacesLocal.childNodes[i]);
+    }
+    else{
+      temp.push(favoritePlacesLocal[i]);
+    }
+  }
+  
+  favoritePlacesLocal = temp;
+  localStorage.setItem('dogsGoneWild',JSON.stringify(temp));
+  //clearFavBar();
+  //check values after perge
+  console.log("temp = " + temp);
+  console.log("favoritePlacesLocal = " + favoritePlacesLocal);
   renderFavBar();
 }
