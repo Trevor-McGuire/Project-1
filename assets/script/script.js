@@ -9,6 +9,7 @@ var closeBtnEl =document.getElementById("close");
 var placeNumberEl = document.getElementById("placeNumber")
 var placeWebsiteEl = document.getElementById("placeWebsite")
 var websiteDivEl = document.getElementById("websiteDiv")
+var placeAddressEl = document.getElementById("placeAddress")
 var favoriteBar = document.querySelector("#favoritebar");
 var lat;
 var lng;
@@ -68,25 +69,10 @@ function transformToPhase2() {
 
   // change heights and widths
   header.setAttribute("style","height:41%;width:100%")
-  // aside.setAttribute("style","height:80%;width:0%")
-  // main.setAttribute("style","height:80%;width:100%")
   weather.setAttribute("style","display:flex;")
-
-  // create 20 rancom articles for testing purposes 
-  // for (i=0 ; i<20 ; i++) {
-  //   var article = document.createElement("article")
-  //   article.setAttribute("id",i)
-  //   article.setAttribute("data-modal-target", "defaultModal");
-  //   article.setAttribute("data-modal-toggle", "defaultModal");
-  //   article.classList.add( "text-white", "bg-blue-700", "hover:bg-blue-800", "focus:ring-4", "focus:outline-none", "focus:ring-blue-300", "font-medium", "rounded-lg", "text-sm", "px-5", "py-2.5", "text-center", "dark:bg-blue-600", "dark:hover:bg-blue-700", "dark:focus:ring-blue-800")
-  //   article.textContent = i
-  //   article.addEventListener("click", showModal);
-  //   main.append(article);
-  // }
 }
 
 closeBtnEl.addEventListener("click", hideModal);
-
 
 function showModal(){
 modalEL.classList.remove("hidden");
@@ -95,27 +81,6 @@ modalEL.classList.remove("hidden");
 function hideModal(){
   modalEL.classList.add("hidden"); 
 }
-
-
-
-// function transformToPhase3(e) {
-//   // log that function was called 
-//   console.log("transformToPhase3() activated")
-
-//   // set elements to variables
-//   var header = document.querySelector("header")
-//   var aside = document.querySelector("aside")
-//   var main = document.querySelector("main")
-
-//   // change heights and widths
-//   header.setAttribute("style","height:20%;width:100%")
-//   aside.setAttribute("style","height:80%;width:50%")
-//   main.setAttribute("style","height:80%;width:50%")
-
-//   // print which <article> was clicked on to <aside>
-//   aside.textContent = `You just clicked the <article id="${e.target.id}">`
-// }
-
 
 ///////////////////////////////////
 /* Fetch API Commands */
@@ -206,7 +171,6 @@ function getTestWeather(location){
   return ret;
 }
 
-//getImageReference("AUjq9jlTyidRtwiBxwaHLqPvlNHSh2d66EFqgqGcGXXVE2Uje7wLWdNL84dB1EE3EOx12wTXvc0m3DWvFiu0Lb7SLw6b1X9pzJXQf4aH45aT3rl2hM3THQzx2atTRU3ixIimBgPoY2vkIFuk2XPjloLjkGXjJPEdN6YFQA2qJb6puiizT9wL");
 async function getImageReference(photoRef){
   const options = {method: 'GET', headers: {accept: 'application/json'}};
   // &key=
@@ -385,7 +349,6 @@ function getWeatherCodeImage(weatherCode, day){
 
 window.addEventListener("load",placesAPI)
 function placesAPI() {
-  //var input = document.getElementById("search-input");
   var options = {
     types: ["(cities)"],
     componentRestrictions: { country: ["us"] },
@@ -413,7 +376,6 @@ function placesAPI() {
 function mapsAPI(latitude,longitude) {
   var lat = latitude;
   var lng = longitude;
-  // i did not change anyting below this line in a long time
   var radius = 32186.9; // 20 miles in meters
   var type = 'park';
   var apiKey = 'AIzaSyAIDjXvF9NUyB43bLbgtB83A9zYc5Tl2qI';
@@ -546,21 +508,24 @@ function getPlaceDetails(place_id, location){
         position: place.geometry.location,
       });
       // get the first picture and add to modal
-      var photos = place.photos; // can we limit this?
-      modalPicture.setAttribute("src", photos[0].getUrl())
+      console.log(typeof(place.photos))
+      if(place.photos != null && typeof(place.photos) == "undefined"){
+        modalPicture.setAttribute("src", "");
+      } else {
+        var photos = place.photos; // can we limit this?
+        modalPicture.setAttribute("src", photos[0].getUrl())
+      }
       // set title into modal
       modalTitle.textContent =place.name + " (" + place.rating + ")";
       // placeAddressEl.textContent = "Address: " + place.formatted_address;
       // modal phone number? place.formatted_phone_number
       // modal rating? place.rating
-      placeWebsiteEl.setAttribute('href', place.url);
-      placeWebsiteEl.textContent = place.formatted_address
+      placeAddressEl.setAttribute('href', place.url);
+      placeAddressEl.textContent = place.formatted_address
       if (place.website != null){
-        var parkWebsite = document.createElement("a");
-        parkWebsite.setAttribute("href", place.website)
-        parkWebsite.classList.add("font-medium", "text-blue-600", "dark:text-blue-500", "hover:underline")
-        parkWebsite.textContent = place.website;
-        websiteDivEl.append(parkWebsite);
+        placeWebsiteEl.textContent = place.website;
+      }else {
+        placeWebsiteEl.textContent = "";
       }
       if(place.formatted_phone_number != null){
         placeNumberEl.textContent = place.formatted_phone_number ;
