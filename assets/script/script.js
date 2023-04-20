@@ -4,6 +4,9 @@ var modalEL = document.getElementById("defaultModal")
 var modalTitle = document.getElementById("modalTitle")
 var modalPicture = document.getElementById("modalPicture")
 var closeBtnEl =document.getElementById("close");
+var placeNumberEl = document.getElementById("placeNumber")
+var placeWebsiteEl = document.getElementById("placeWebsite")
+var websiteDivEl = document.getElementById("websiteDiv")
 var lat;
 var lng;
 input.addEventListener("keypress",locationPicked)
@@ -540,11 +543,21 @@ function getPlaceDetails(place_id, location){
       var photos = place.photos; // can we limit this?
       modalPicture.setAttribute("src", photos[0].getUrl())
       // set title into modal
-      modalTitle.textContent = place.name;
-      // modal address? place.formatted_address
+      modalTitle.textContent =place.name;
+      // placeAddressEl.textContent = "Address: " + place.formatted_address;
       // modal phone number? place.formatted_phone_number
       // modal rating? place.rating
-      // modal website? place.website
+      placeWebsiteEl.setAttribute('href', place.url);
+      placeWebsiteEl.textContent = place.formatted_address
+      if (place.website != null){
+        var parkWebsite = document.createElement("a");
+        parkWebsite.setAttribute("href", place.website)
+        parkWebsite.textContent = place.website;
+        websiteDivEl.append(parkWebsite);
+      }
+      if(place.formatted_phone_number != null){
+        placeNumberEl.textContent = place.formatted_phone_number;
+      }
       console.log(JSON.stringify(place));
     }
   })
