@@ -670,13 +670,15 @@ function setLocalStorage(name, place_id) {
 }
 
 function removeFromLocalStorage(place_id){
+  console.log("in remove from local");
   console.log("place id = " + place_id);
   // return value
   var temp = [];
 
   for (var i = 0; i < favoritePlacesLocal.length; i++){
     if (favoritePlacesLocal[i][1] == place_id){
-      favoritePlacesLocal.removeChild(favoritePlacesLocal.childNodes[i]);
+      console.log("we have a match");
+      favoriteBar.removeChild(favoriteBar.childNodes[i]);
     }
     else{
       temp.push(favoritePlacesLocal[i]);
@@ -689,5 +691,5 @@ function removeFromLocalStorage(place_id){
   //check values after perge
   console.log("temp = " + temp);
   console.log("favoritePlacesLocal = " + favoritePlacesLocal);
-  renderFavBar();
+  //renderFavBar();
 }
