@@ -10,6 +10,10 @@ Enter any city in the US and be greated by a map of dog parks in and near your c
 
 [Dogs Gone Wild](https://trevor-mcguire.github.io/Project-1/)
 
+## Mock Up
+
+![project-pic](https://user-images.githubusercontent.com/55112932/233494204-73cdb5a6-0f50-4733-8422-9728ef7a129f.png)
+
 ## Getting Started
 
 ### Dependencies
