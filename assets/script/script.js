@@ -64,7 +64,7 @@ function transformToPhase2() {
   main.textContent = '';
 
   // change heights and widths
-  header.setAttribute("style","height:38%;width:100%")
+  header.setAttribute("style","height:41%;width:100%")
   // aside.setAttribute("style","height:80%;width:0%")
   // main.setAttribute("style","height:80%;width:100%")
   weather.setAttribute("style","display:flex;")
@@ -596,7 +596,7 @@ function renderFavBar() {
     button.textContent = favoritePlacesLocal[i][0];
     console.log(favoritePlacesLocal[i][1]);
     //todo pick a final color
-    button.setAttribute("class","text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2");
+    button.setAttribute("class","text-white mt-1 bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2");
     var temp = favoritePlacesLocal[i][1];
     console.log(temp);
     button.addEventListener("click", function() {
