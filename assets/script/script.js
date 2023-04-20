@@ -65,21 +65,21 @@ function transformToPhase2() {
 
   // change heights and widths
   header.setAttribute("style","height:38%;width:100%")
-  aside.setAttribute("style","height:80%;width:0%")
-  main.setAttribute("style","height:80%;width:100%")
+  // aside.setAttribute("style","height:80%;width:0%")
+  // main.setAttribute("style","height:80%;width:100%")
   weather.setAttribute("style","display:flex;")
 
   // create 20 rancom articles for testing purposes 
-  for (i=0 ; i<20 ; i++) {
-    var article = document.createElement("article")
-    article.setAttribute("id",i)
-    article.setAttribute("data-modal-target", "defaultModal");
-    article.setAttribute("data-modal-toggle", "defaultModal");
-    article.classList.add( "text-white", "bg-blue-700", "hover:bg-blue-800", "focus:ring-4", "focus:outline-none", "focus:ring-blue-300", "font-medium", "rounded-lg", "text-sm", "px-5", "py-2.5", "text-center", "dark:bg-blue-600", "dark:hover:bg-blue-700", "dark:focus:ring-blue-800")
-    article.textContent = i
-    article.addEventListener("click", showModal);
-    main.append(article);
-  }
+  // for (i=0 ; i<20 ; i++) {
+  //   var article = document.createElement("article")
+  //   article.setAttribute("id",i)
+  //   article.setAttribute("data-modal-target", "defaultModal");
+  //   article.setAttribute("data-modal-toggle", "defaultModal");
+  //   article.classList.add( "text-white", "bg-blue-700", "hover:bg-blue-800", "focus:ring-4", "focus:outline-none", "focus:ring-blue-300", "font-medium", "rounded-lg", "text-sm", "px-5", "py-2.5", "text-center", "dark:bg-blue-600", "dark:hover:bg-blue-700", "dark:focus:ring-blue-800")
+  //   article.textContent = i
+  //   article.addEventListener("click", showModal);
+  //   main.append(article);
+  // }
 }
 
 closeBtnEl.addEventListener("click", hideModal);
@@ -543,7 +543,7 @@ function getPlaceDetails(place_id, location){
       var photos = place.photos; // can we limit this?
       modalPicture.setAttribute("src", photos[0].getUrl())
       // set title into modal
-      modalTitle.textContent =place.name;
+      modalTitle.textContent =place.name + " (" + place.rating + ")";
       // placeAddressEl.textContent = "Address: " + place.formatted_address;
       // modal phone number? place.formatted_phone_number
       // modal rating? place.rating
@@ -552,11 +552,12 @@ function getPlaceDetails(place_id, location){
       if (place.website != null){
         var parkWebsite = document.createElement("a");
         parkWebsite.setAttribute("href", place.website)
+        parkWebsite.classList.add("font-medium", "text-blue-600", "dark:text-blue-500", "hover:underline")
         parkWebsite.textContent = place.website;
         websiteDivEl.append(parkWebsite);
       }
       if(place.formatted_phone_number != null){
-        placeNumberEl.textContent = place.formatted_phone_number;
+        placeNumberEl.textContent = place.formatted_phone_number ;
       }
       console.log(JSON.stringify(place));
     }
