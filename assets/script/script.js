@@ -3,6 +3,7 @@ var button = document.querySelector("#search-button")
 var modalEL = document.getElementById("defaultModal")
 var modalTitle = document.getElementById("modalTitle")
 var modalPicture = document.getElementById("modalPicture")
+var modalButton = document.getElementById("modalButton")
 var closeBtnEl =document.getElementById("close");
 var placeNumberEl = document.getElementById("placeNumber")
 var placeWebsiteEl = document.getElementById("placeWebsite")
@@ -123,21 +124,21 @@ function hideModal(){
  * @param {} location 
  * @returns 
  */
-async function getWeather(location){
+async function getWeather(latitute, longitude){
     const options = {method: 'GET', headers: {accept: 'application/json'}};
 
     //var weatherApiKey = "KpAGFgRmxnfvYhtHvLxCZNTAlIPAffIV";
     var weatherApiKey = "4aZo1qVaQKrX2oZsXAE0hb7HvyrE0cWv";
-    const response = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + location + '&timesteps=hourly&units=imperial&apikey=' + weatherApiKey, options);
+    const jsonData = await fetch('https://api.tomorrow.io/v4/weather/forecast?location=' + latitute + ',' + longitude + '&timesteps=hourly&units=imperial&apikey=' + weatherApiKey, options).then((response) => response.json());
     
     // check that response was not okay 
-    if (!response.ok) {
-      throw new Error("problem with");
-    }
-    const jsonData = await response.json();
+    //if (!response.ok) {
+    //  throw new Error("problem with");
+    //}
+    //const jsonData = await response.json();
     
     // log response
-    console.log(response);
+    //console.log(response);
     console.log(jsonData);
     
     var ret = [];
@@ -148,6 +149,7 @@ async function getWeather(location){
       ret.push([temp, code]);
     }
     console.log(JSON.stringify(ret));
+    renderWeather(ret);
     return ret;
 }
 
@@ -157,11 +159,13 @@ async function getWeather(location){
  * @param {int} lat 
  * @param {int} lng 
  */
-function renderWeather(lat,lng){
-  latLng = lat + ", " + lng
+function renderWeather(currentWeather){
+  //latLng = lat + ", " + lng
   // get list of current weather forcast
   //var currentWeather = getWeather(latLng);
-  var currentWeather = getTestWeather(latLng);
+  console.log("just got currentWeather");
+  console.log(JSON.stringify(currentWeather));
+  //var currentWeather = getTestWeather(latLng);
   // NEED TO FIGURE OUT HOW TO GET TIME FOR EACH HOUR!!
   var hour = 0;
   var iconURL;
@@ -394,7 +398,7 @@ function placesAPI() {
      lat = place.geometry.location.lat()
      lng = place.geometry.location.lng()
     //mapsAPI(lat,lng)
-    renderWeather(lat, lng)
+    getWeather(lat, lng)
     window.initMap = getNearByLocations(lat,lng)
   })
   return autocomplete
@@ -559,6 +563,10 @@ function getPlaceDetails(place_id, location){
       if(place.formatted_phone_number != null){
         placeNumberEl.textContent = place.formatted_phone_number ;
       }
+      //update modal button
+      modalButton.addEventListener("click", function() {
+        setLocalStorage(place.name, place.place_id);
+      })
       console.log(JSON.stringify(place));
     }
   })
@@ -572,7 +580,7 @@ function favorate(){
 ////////////////
 /* local storage */
 ////////////////
-
+localStorage.setItem('dogsGoneWild',[]);
 
 var favoritePlacesLocal = []
 
@@ -591,7 +599,14 @@ getLocalStorage()
 //this function will render the fav bar to access our fav list
 function renderFavBar() {
   var favoriteBar = document.querySelector("#favoritebar");
-  for(i=0 ; i<favoritePlacesLocal.length ; i++) {
+  
+  // clear all children before adding more
+  while (favoriteBar.firstChild) {
+    favoriteBar.removeChild(favoriteBar.firstChild);
+  }
+
+  //repopulate with new details
+  for(i=0; i < favoritePlacesLocal.length; i++) {
     var button = document.createElement("button");
     button.textContent = favoritePlacesLocal[i][0];
     console.log(favoritePlacesLocal[i][1]);
@@ -605,10 +620,10 @@ function renderFavBar() {
     console.log(button);
     favoriteBar.appendChild(button);
   }
-
 }
 
-function setLocalStorage() {
-  favoritePlacesLocal.push([name,placeid])
-  localStorage.setItem('dogsGoneWild',)
+function setLocalStorage(name, place_id) {
+  favoritePlacesLocal.push([name,place_id]);
+  localStorage.setItem('dogsGoneWild',favoritePlacesLocal);
+  renderFavBar();
 }
