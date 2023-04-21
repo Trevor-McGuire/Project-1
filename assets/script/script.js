@@ -11,6 +11,7 @@ var placeWebsiteEl = document.getElementById("placeWebsite")
 var websiteDivEl = document.getElementById("websiteDiv")
 var placeAddressEl = document.getElementById("placeAddress")
 var favoriteBar = document.querySelector("#favoritebar");
+var modalContent = document.querySelector("#modalContent");
 var lat;
 var lng;
 input.addEventListener("keypress",locationPicked)
@@ -37,17 +38,17 @@ function parkLocation(name, place_id, photoRef, rating){
 // two ways to call this function: hitting 'enter' or click 'search'
 function locationPicked(e) {
   var location = placesAPI()
-  console.log(location)
+  //console.log(location)
   var keyCode = e.code || e.key
   if (keyCode == 'Enter'){
     // Enter pressed
-    console.log("locationPicker() called with 'enter' key")
+    //console.log("locationPicker() called with 'enter' key")
     // todo validate input
     transformToPhase2()
   }
   if (e.target.id === "search-button") {
     // button clicked
-    console.log("locationPicker() called with 'search' button")
+    //console.log("locationPicker() called with 'search' button")
     // todo validate input
     transformToPhase2()
   }
@@ -55,7 +56,7 @@ function locationPicked(e) {
 
 function transformToPhase2() {
   // log that function was called 
-  console.log("transformToPhase2() activated")
+  //console.log("transformToPhase2() activated")
   
   // set elements to variables
   var header = document.querySelector("header")
@@ -106,7 +107,7 @@ async function getWeather(latitute, longitude){
     
     // log response
     //console.log(response);
-    console.log(jsonData);
+    //console.log(jsonData);
     
     var ret = [];
     // for each hour we want the temperature, weatherCode 
@@ -115,7 +116,7 @@ async function getWeather(latitute, longitude){
       var code = jsonData.timelines.hourly[i].values.weatherCode;
       ret.push([temp, code]);
     }
-    console.log(JSON.stringify(ret));
+    //console.log(JSON.stringify(ret));
     renderWeather(ret);
     return ret;
 }
@@ -130,8 +131,8 @@ function renderWeather(currentWeather){
   //latLng = lat + ", " + lng
   // get list of current weather forcast
   //var currentWeather = getWeather(latLng);
-  console.log("just got currentWeather");
-  console.log(JSON.stringify(currentWeather));
+  //console.log("just got currentWeather");
+  //console.log(JSON.stringify(currentWeather));
   //var currentWeather = getTestWeather(latLng);
   // NEED TO FIGURE OUT HOW TO GET TIME FOR EACH HOUR!!
   var hour = 0;
@@ -147,7 +148,7 @@ function renderWeather(currentWeather){
     // set current weather
     weatherTempEl[i].textContent = currentWeather[i][0] + '° F';
     // get weather code
-    console.log("current hour is " + hour);
+    //console.log("current hour is " + hour);
     // check if day
     if (hour + i > 8 && hour + i < 18)
     iconURL = getWeatherCodeImage(currentWeather[i][1], true);
@@ -177,7 +178,7 @@ async function getImageReference(photoRef){
   const response = await fetch('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' + photoRef + '&key=' + googleApiKey, options);
   
   // check that response was not okay 
-  console.log(response);
+  //console.log(response);
   //if (!response.ok) {
   //  throw new Error("problem with");
   //}
@@ -423,7 +424,7 @@ var service;
 var infowindow;
 
 function getNearByLocations(latitude, longitude) {
-  console.log("inside get nearby locations 2");
+  //console.log("inside get nearby locations 2");
 
   var pyrmont = new google.maps.LatLng(latitude, longitude);
 
@@ -455,7 +456,7 @@ function getNearByLocations(latitude, longitude) {
 }
 
 function callback(results, status) {
-  console.log(JSON.stringify(results))
+  //console.log(JSON.stringify(results))
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     var jsonResults = results;
     var ret = [];
@@ -464,7 +465,7 @@ function callback(results, status) {
       createMarker(results[i]);
     }
     map.setCenter(results[0].geometry.location);
-    console.log(JSON.stringify(ret));
+    //console.log(JSON.stringify(ret));
     return ret;
   }
 }
@@ -479,7 +480,7 @@ function createMarker(place){
   });
 
   google.maps.event.addListener(marker, "click", () => {
-    console.log("clicked an object")
+    //console.log("clicked an object")
     getPlaceDetails(place.place_id, place.geometry.location);
   });
 
@@ -508,7 +509,7 @@ function getPlaceDetails(place_id, location){
         position: place.geometry.location,
       });
       // get the first picture and add to modal
-      console.log(typeof(place.photos))
+      //console.log(typeof(place.photos))
       if(place.photos != null && typeof(place.photos) == "undefined"){
         modalPicture.setAttribute("src", "");
       } else {
@@ -531,21 +532,28 @@ function getPlaceDetails(place_id, location){
         placeNumberEl.textContent = place.formatted_phone_number ;
       }
       //update modal button
-      modalFavButton.addEventListener("click", function() {
+      //modalFavButton.removeEventListener("click", this);
+      //modalUnFavButton.removeEventListener("click", this);
+      function saveToLocal(){
+        console.log("Clicked on modalFavButton for " + place.name);
         setLocalStorage(place.name, place.place_id);
-      })
-      modalUnFavButton.addEventListener("click", function() {
+      }
+      function unSaveFromLocal(){
+        console.log("Clicked on modalUnFavButton for " + place.name);
         removeFromLocalStorage(place.place_id);
+      }
+
+      closeBtnEl.addEventListener("click", function() {
+        modalFavButton.removeEventListener("click", saveToLocal);
+        modalUnFavButton.removeEventListener("click", unSaveFromLocal);
       })
-      console.log(JSON.stringify(place));
+      
+      modalFavButton.addEventListener("click", saveToLocal);
+      modalUnFavButton.addEventListener("click", unSaveFromLocal);
+      //console.log(JSON.stringify(place)); 
     }
   })
 }
-
-function favorate(){
-
-}
-
 
 ////////////////
 /* local storage */
@@ -620,6 +628,7 @@ function clearFavBar(){
 
 function setLocalStorage(name, place_id) {
   console.log("in set local storage. saving " + name);
+  console.log("before = " + JSON.stringify(favoritePlacesLocal));
   var bool = true;
   for (var i = 0; i < favoritePlacesLocal.length; i++){
     if (favoritePlacesLocal[i][1] == place_id){
@@ -627,8 +636,10 @@ function setLocalStorage(name, place_id) {
     }
   }
   if (bool){
+    console.log("no match so adding");
     favoritePlacesLocal.push([name,place_id]);
     localStorage.setItem('dogsGoneWild', JSON.stringify(favoritePlacesLocal));
+    console.log(JSON.stringify(favoritePlacesLocal));
     clearFavBar();
     renderFavBar();
   }
@@ -651,10 +662,11 @@ function removeFromLocalStorage(place_id){
   }
   
   favoritePlacesLocal = temp;
-  localStorage.setItem('dogsGoneWild',JSON.stringify(temp));
+  localStorage.setItem('dogsGoneWild',JSON.stringify(favoritePlacesLocal));
   //clearFavBar();
   //check values after perge
   console.log("temp = " + temp);
   console.log("favoritePlacesLocal = " + favoritePlacesLocal);
+  console.log("local storage = " + JSON.stringify(favoritePlacesLocal));
   //renderFavBar();
 }
